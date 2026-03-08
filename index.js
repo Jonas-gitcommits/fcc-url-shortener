@@ -23,7 +23,7 @@ app.get('/api/hello', function(req, res) {
 });
 
 //** URL Shortener Microservice 
-// MY CODE */ 
+// MY CODE: */ 
  
 const urlDatabase = [];
 let idCounter = 1;
@@ -33,9 +33,13 @@ app.post('/api/shorturl', (req, res) => {
 
   try {
     const url = new URL(originalUrl);
+    
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return res.json({ error: 'invalid url' });
+    }
     dns.lookup(url.hostname, (err, address) => {
       if (!address || err) {
-        return res.json({ error: 'invaild url' });
+        return res.json({ error: 'invalid url' });
       }
     const short_url = idCounter;
     urlDatabase.push({
@@ -56,8 +60,8 @@ app.post('/api/shorturl', (req, res) => {
 });
 
 app.get('/api/shorturl/:short_url', function(req, res) {
-  const shortUrl = req.params.short_url;
-  const urlEntry = urlDatabase.find(entry => entry.short_url == shortUrl);
+  const shortUrl = parseInt(req.params.short_url);
+  const urlEntry = urlDatabase.find(entry => entry.short_url === shortUrlParam);
   if (urlEntry) {
     res.redirect(urlEntry.original_url);
   } else {
