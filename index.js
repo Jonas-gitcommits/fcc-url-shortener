@@ -41,15 +41,15 @@ app.post('/api/shorturl', (req, res) => {
       if (!address || err) {
         return res.json({ error: 'invalid url' });
       }
-    const short_url = idCounter;
+    const shorturl = idCounter;
     urlDatabase.push({
     original_url: originalUrl,
-    short_url: short_url
+    short_url: shorturl
   });
   idCounter++; 
   res.json({
     original_url: originalUrl,
-    short_url: short_url
+    short_url: shorturl
   });
 
 
@@ -60,8 +60,10 @@ app.post('/api/shorturl', (req, res) => {
 });
 
 app.get('/api/shorturl/:short_url', function(req, res) {
+  
   const shortUrl = parseInt(req.params.short_url);
-  const urlEntry = urlDatabase.find(entry => entry.short_url === shortUrlParam);
+
+  const urlEntry = urlDatabase.find(entry => entry.short_url === shortUrl);
   if (urlEntry) {
     res.redirect(urlEntry.original_url);
   } else {
