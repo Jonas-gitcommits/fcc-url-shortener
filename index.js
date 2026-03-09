@@ -60,23 +60,14 @@ app.post('/api/shorturl', (req, res) => {
 });
 
 app.get('/api/shorturl/:short_url', function(req, res) {
-  console.log("\n--- NEUER GET REQUEST ---");
-  console.log("1. Angefragte ID (aus der URL):", req.params.short_url);
-  console.log("Typ der angefragten ID:", typeof req.params.short_url);
   
   const shortUrlParam = parseInt(req.params.short_url);
-  console.log("2. Umgewandelt in Zahl (Integer):", shortUrlParam);
-  
-  console.log("3. Aktueller Inhalt der Datenbank:", urlDatabase);
   
   const urlEntry = urlDatabase.find(entry => entry.short_url === shortUrlParam);
-  console.log("4. Ergebnis der Suche (urlEntry):", urlEntry);
   
   if (urlEntry) {
-    console.log("--> ERFOLG: Gefunden! Leite weiter zu:", urlEntry.original_url);
     res.redirect(urlEntry.original_url);
   } else {
-    console.log("--> FEHLSCHLAG: Nichts gefunden! Sende JSON-Fehler.");
     res.json({ error: 'No short URL found for the given input' });
   }
 });
